@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Mahjongg Dimensions</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="cache-control" content="max-age=2400000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="favicon.png" sizes="256x256">
+    <link rel="icon" href="favicon.png">
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <style>
+      @font-face {
+        font-family: 'mj-main';
+        src: url(font/main.ttf) format('truetype');
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: mj-main;
+      }
+    </style>
+
+    <script async src="js/aipPlug.js"></script>
+
+  </head>
+  <body>
+    <div id="preroll"></div>
+    <div id="game-container" class="game-loading" >
+      <canvas id="canvas" class="fill-parent" ></canvas>
+      <div id="stack-images"></div>
+
+      <!-- game overlay -->
+      <div class="game-overlay fill-parent">
+        <img class="btn btn-rotate left" data-direction="left" src="images/rotate-left.png" >
+        <img class="btn btn-rotate right" data-direction="right" src="images/rotate-right.png" >
+
+        <!-- top bar -->
+        <div class="top-bar">
+          <div class="top-bar-item time-holder">
+            <img src="images/sand-glass.png">
+            <span id="left-time" ></span>
+          </div>
+          <div class="top-bar-item score-holder">
+            <img src="images/score.png">
+            <span id="score" ></span>
+          </div>
+          <div class="top-bar-item btn-holder restart-holder">
+            <img class="btn img-btn" id="btn-restart" src="images/btn-restart.png">
+          </div>
+          <div class="top-bar-item btn-holder reset-holder">
+            <img class="btn img-btn" id="btn-shuffle" src="images/btn-reset.png">
+          </div>
+          <div class="top-bar-item btn-holder pause-holder">
+            <img class="btn img-btn" id="btn-pause" src="images/btn-pause.png">
+          </div>
+          <div class="top-bar-item btn-holder mute-holder">
+            <img class="btn img-btn" id="btn-mute" src="images/btn-sound.png">
+            <img class="btn img-btn" id="btn-unmute" src="images/btn-mute.png">
+          </div>
+        </div>
+
+        <!-- back overlay -->
+        <div class="black-overlay fill-parent"></div>
+
+        <!-- loading anim -->
+        <div class="fill-parent align-center">
+          <style>
+            .sk-fold {
+              width: 70px;
+              height: 70px;
+              position: relative;
+              transform: rotateZ(45deg); 
+              display: none;
+            }
+            .sk-fold-cube {
+              float: left;
+              width: 50%;
+              height: 50%;
+              position: relative;
+              transform: scale(1.1); 
+            }
+
+            .sk-fold-cube:before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: white;
+              animation: sk-fold 2.4s infinite linear both;
+              transform-origin: 100% 100%; 
+            }
+            .sk-fold-cube:nth-child(2) { transform: scale(1.1) rotateZ(90deg); }
+            .sk-fold-cube:nth-child(4) { transform: scale(1.1) rotateZ(180deg); }
+            .sk-fold-cube:nth-child(3) { transform: scale(1.1) rotateZ(270deg); }
+            .sk-fold-cube:nth-child(2):before { animation-delay: 0.3s; }
+            .sk-fold-cube:nth-child(4):before { animation-delay: 0.6s; }
+            .sk-fold-cube:nth-child(3):before { animation-delay: 0.9s; }
+
+            @keyframes sk-fold {
+              0%, 10% {
+                transform: perspective(140px) rotateX(-180deg);
+                opacity: 0; 
+              } 25%, 75% {
+                transform: perspective(140px) rotateX(0deg);
+                opacity: 1; 
+              } 90%, 100% {
+                transform: perspective(140px) rotateY(180deg);
+                opacity: 0;
+              } 
+            }
+
+          </style>
+          <div class="sk-fold">
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
+            <div class="sk-fold-cube"></div>
+          </div>
+        </div>
+
+        <!-- start screen -->
+        <div class="fill-parent align-center start-view">
+          <img class="game-title" src="images/game-title.png" >
+          <img class="btn img-btn btn-start" src="images/btn-start.png" >
+        </div>
+
+        <!-- notification -->
+        <div class="fill-parent align-center notification">
+          <div class="notification-box-wrapper">
+            <div class="notification-box-wrapper-inner">
+              <div class="notification-box">
+                <div class="text align-center "></div>
+                <div class="btns-wrapper align-center ">
+                  <img class="btn img-btn btn-play-again" src="images/btn-play-again.png" >
+                  <img class="btn img-btn btn-continue" src="images/btn-continue.png" >
+                  <img class="btn img-btn btn-how-to" src="images/btn-how-to.png" >
+                  <img class="btn img-btn btn-restart" src="images/btn-yes.png" >
+                  <img class="btn img-btn btn-cancel" src="images/btn-cancel.png" >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- how to play -->
+        <div class="fill-parent align-center help">
+          <div class="help-box">
+            <div class="help-box-inner">
+              <div class="help-box-header">
+                <span class="help-tab active" data-target="#help-basic" >Basic Gameplay</span>
+                <span class="help-tab" data-target="#help-score" >Maximize Your Score</span>
+                <span id="show-help" class="checkbox" >Show Help At Game Start</span>
+              </div>
+              <div class="help-box-content">
+                <img class="active" id="help-basic" src="images/help-basic.jpg">
+                <img id="help-score" src="images/help-score.jpg">
+              </div>
+              <div style="text-align: center;" >
+                <img class="btn img-btn btn-close-help" src="images/btn-continue.png" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <script src="js/index.js"></script>
+  </body>
+</html>
