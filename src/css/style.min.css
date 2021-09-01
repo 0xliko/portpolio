@@ -481,4 +481,15 @@ p {
    font-family: "sansation";
    font-weight: 500;
 }
+.item-box-overlay {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    height: 0;
+    transition: height 0.2s ease;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+    overflow: hidden;
+}
 /*# sourceMappingURL=style.min.css.map */
