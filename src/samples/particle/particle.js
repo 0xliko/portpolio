@@ -3,6 +3,7 @@
  */
 
 function Particle(x, y, sc){
+
     this.center1 = new THREE.Vector2(x - 500, -y + 500);
     this.center2 = new THREE.Vector2();
     this.pos = new THREE.Vector2();
