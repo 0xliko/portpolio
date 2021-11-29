@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+    background-image: url("bg.png");
+    color: #fff;
+    font-family: Monospace;
+    font-size: 13px;
+    line-height: 24px;
+    overscroll-behavior: none;
+    overflow: hidden;
+}
+
