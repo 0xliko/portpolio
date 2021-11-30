@@ -460,6 +460,15 @@ p {
 .project-img-container img{
     width: 80%;
 }
+.project-img-container iframe{
+    width: 80%;
+    padding: 0.25rem;
+    background-color: #f7f9fa;
+    border: 1px solid #3f3f3f;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    height: auto;
+}
 #features{
  background: #dbdbdb;
 }
