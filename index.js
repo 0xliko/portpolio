@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 const app = express();
 
 
@@ -11,5 +11,5 @@ app.get("*",(req,res)=>{
 });
 
 app.listen(port,()=>{
-	console.log("server listening on http://127.0.0.1:8080. ")
+	console.log("server listening on http://127.0.0.1:8000. ")
 });
